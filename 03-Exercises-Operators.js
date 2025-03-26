@@ -34,8 +34,8 @@ console.log(5 > 3 && 4 < 3 || 54 != 65);
 console.log(!(5 > 3));
 // 9. Utiliza el operador ternario
 let termux = false
-termux ? console.log("No eres root? que mal") : console.log("Eres root? eres Dios")
+termux ? console.log("No eres root? que mal") : console.log("Eres root? eres Dios");
 // 10. Combina operadores aritméticos, de comparáción y lógicas
-let x = 6
-let y = 8
-console.log(!(y == 8 && y < 15 == x + 4))
+let x = 6;
+let y = 8;
+console.log(!(y == 8 && y < 15 == x + 4));
