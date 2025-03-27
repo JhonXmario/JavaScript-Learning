@@ -58,8 +58,22 @@ extern();
 
 // Funciones de orden superior
 function Applyfunc(funx, param) {
-    funx(param) //? Aun no entiendo bien esto
+    funx(param); //? Aun no entiendo bien esto
 }
-Applyfunc(xz, ("Funcion de orden superior"))
+Applyfunc(xz, ("Funcion de orden superior"));
 
-// continuo aqui
+// forEach (Crear un bucle for en conjunto de una funcion)
+let array = [13, 43, 23, 87, 54];
+let set = new Set(["Jhon", "Mario", 19, "MarioXYZ"]);
+let map = new Map([
+    ["Name", "Jhon"],
+    ["Last Name", "Diaz"],
+    ["Age", 19]
+]);
+
+array.forEach(function (value){
+    console.log(value);
+})
+array.forEach((value) => console.log(value));
+set.forEach((value) => console.log(value));
+map.forEach((value) => console.log(value));
