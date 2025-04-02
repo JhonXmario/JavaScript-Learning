@@ -1,0 +1,10 @@
+{
+    "titulo": "Aprendiendo",
+    "subtitulo": "Node.js",
+    "nombre": "Javascript",
+    "temas": [
+        "Bearder theme",
+        "One Dark Pro"
+    ],
+    "funciona": true
+}
