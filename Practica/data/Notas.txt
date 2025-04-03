@@ -1,0 +1,48 @@
+//notas de JSON
+// - JSON es un formato de intercambio de datos ligero y fácil de leer y escribir para humanos y máquinas.
+// - JSON es un subconjunto de JavaScript, pero se utiliza en muchos lenguajes de programación.
+
+// - JSON se basa en dos estructuras de datos: objetos y arreglos.
+// - Un objeto es una colección de pares clave-valor, donde la clave es una cadena y el valor puede ser cualquier tipo de dato JSON.
+// - Un arreglo es una lista ordenada de valores, que pueden ser de cualquier tipo de dato JSON.
+// - Los tipos de datos JSON incluyen: cadenas, números, booleanos, nulos, objetos y arreglos.
+
+
+// Notas de npm
+// - npm es el gestor de paquetes de Node.js y se utiliza para instalar y gestionar dependencias en proyectos de JavaScript.
+// - npm permite instalar paquetes de código abierto desde el registro de npm, que es una base de datos pública de paquetes de código abierto.
+// - npm también permite crear y publicar paquetes propios en el registro de npm.
+// - npm utiliza un archivo llamado package.json para gestionar las dependencias y la configuración del proyecto.
+// - El archivo package.json contiene información sobre el proyecto, como el nombre, la versión, la descripción, las dependencias y los scripts.
+
+//! - En el archivo package.json se pueden establecer palabras claves y asignales comandos, osea scrpits, como correr ciertos archivos dentro de varias carpetas y asi agilizar por ejemplo correr el servidor e inicializar el proyecto
+
+// - npm install: instala las dependencias del proyecto según el archivo package.json.
+// - npm install <paquete>: instala un paquete específico y lo añade a las dependencias del proyecto.
+// - npm uninstall <paquete>: desinstala un paquete específico y lo elimina de las dependencias del proyecto.
+// - npm update: actualiza las dependencias del proyecto según el archivo package.json.
+// - npm remove <paquete>: desinstala un paquete específico y lo elimina de las dependencias del proyecto.
+// - npm run <script>: ejecuta un script definido en el archivo package.json.
+
+// - npm init: inicializa nuevo paquete node para empezar a crear un nuevo proyecto
+
+JhonXmario: @workspace /explain 
+
+Workspace: El código que has proporcionado utiliza el módulo `fs` de Node.js para trabajar con archivos y flujos de datos (streams). A continuación, te explico cada parte del código:
+
+1. **Importación de módulos**:  
+   Se importan dos funciones del módulo `fs` y su versión basada en promesas (`fs/promises`):  
+   - `writeFile`: Permite escribir datos en un archivo de manera asíncrona.  
+   - `createReadStream`: Crea un flujo de lectura para leer archivos de manera eficiente, especialmente útil para manejar archivos grandes.
+
+2. **Creación de un archivo grande (comentado)**:  
+   El bloque comentado define una función asíncrona llamada `createBigFile`. Esta función utiliza `writeFile` para crear un archivo llamado `bigfile.txt` en la carpeta data. El contenido del archivo es la cadena `"Hello World"` repetida 100,000 veces. Aunque esta parte está comentada, su propósito es generar un archivo grande para probar el manejo de flujos.
+
+3. **Lectura del archivo con un flujo de datos**:  
+   Se utiliza `createReadStream` para leer el archivo `bigfile.txt`. Este método no carga todo el archivo en memoria, sino que lo lee en fragmentos (chunks), lo que es ideal para archivos grandes.
+
+4. **Eventos del flujo**:  
+   - **Evento `data`**: Cada vez que se lee un fragmento del archivo, se activa este evento. El fragmento se pasa como argumento (`chunk`) y se convierte a texto con `chunk.toString()` antes de imprimirlo en la consola.  
+   - **Evento `end`**: Este evento se activa cuando se ha leído todo el archivo. En este caso, imprime el mensaje `"Ya nojoda"` en la consola, indicando que la operación ha finalizado.
+
+En resumen, este código demuestra cómo manejar archivos grandes en Node.js utilizando flujos de datos. Primero, se genera un archivo grande (aunque está comentado) y luego se lee de manera eficiente utilizando `createReadStream`. Los eventos `data` y `end` permiten procesar los datos a medida que se leen y realizar acciones al finalizar la lectura.
