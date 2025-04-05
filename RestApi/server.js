@@ -3,7 +3,7 @@ const morgan = require('morgan')
 const app = express()
 const port = 3000
 
-const products = [
+let products = [
     { id: 1, name: 'Laptop HP' },
     { id: 2, name: 'Samsumg Galaxy' },
     { id: 3, name: 'Geforce RTX 5500' }
@@ -19,18 +19,14 @@ app.get('/products', (req, res) => {
 })
 
 app.get('/products/:id', (req, res) => {
-    
-    console.log(req.params.id); // 1. Imprime en la consola el valor del parámetro `id` recibido en la URL.
-    console.log("Obteniendo producto por id"); // 2. Imprime un mensaje indicando que se está obteniendo un producto por su ID.
-    
-    const productfound = products.find(p => p.id === parseInt(req.params.id)); // 3. Busca en el array `products` un producto cuyo `id` coincida con el valor del parámetro `id` recibido en la URL. El `id` de la URL se convierte a número con `parseInt` para compararlo correctamente.
+    const productfound = products.find(p => p.id === parseInt(req.params.id)); //Busca en el array `products` un producto cuyo `id` coincida con el valor del parámetro `id` recibido en la URL. El `id` de la URL se convierte a número con `parseInt` para compararlo correctamente.
 
-    if (!(productfound)) return res.status(404).json({  // 4. Si no se encuentra el producto, se envía un mensaje de error.
-        message: "Producto no encontrado"
-    })
+    if (!(productfound)) 
+        return res.status(404).json({  //Si no se encuentra el producto, se envía un mensaje de error.
+            message: "Producto no encontrado"
+        });
   
-    console.log(productfound); // 4. Imprime en la consola el producto encontrado (o `undefined` si no se encontró ninguno).
-    res.json(productfound); // 5. Envía como respuesta el producto encontrado en formato JSON. Si no se encontró un producto, enviará `null`.
+    res.json(productfound); //Envía como respuesta el producto encontrado en formato JSON. Si no se encontró un producto, enviará `null`.
 });
 
 app.post('/products', (req, res) => {
@@ -39,12 +35,29 @@ app.post('/products', (req, res) => {
     res.send(newproduct) // Envía como respuesta el nuevo producto creado.
 })
 
-app.put('/products', (req, res) => {
-    res.send('Actualizando productos')
+app.put('/products/:id', (req, res) => {
+    const newData = req.body
+    
+    const productfound = products.find(p => p.id === parseInt(req.params.id));
+    if (!(productfound)) 
+        return res.status(404).json({ 
+            message: "Producto no encontrado"
+        });
+    products = products.map(p => p.id === parseInt(req.params.id) ? {...p, ...newData} : p)
+    res.json({
+        message: "Producto actualizado"
+    })
 })
 
-app.delete('/products', (req, res) => {
-    res.send('Borrando producto')
+app.delete('/products/:id', (req, res) => {
+    const productfound = products.find(p => p.id === parseInt(req.params.id)); 
+
+    if (!(productfound)) 
+        return res.status(404).json({  
+            message: "Producto no encontrado"
+        });
+    products = products.filter(p => p.id !== parseInt(req.params.id))
+    res.sendStatus(204)
 })
 
 app.listen(port, () => console.log(`El servidor esta en ejecucion en el puerto: ${port}!`))
