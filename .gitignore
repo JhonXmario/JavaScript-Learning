@@ -1,2 +1,4 @@
 /RestApi/node_modules
 /Express/node_modules
+/Prisma/node_modules
+/Prisma/.env
