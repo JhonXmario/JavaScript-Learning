@@ -1,0 +1,73 @@
+// Entidad principal para candidatos externos (Elegibles)
+model Elegible {
+  id                      Int           @id @default(autoincrement())
+  nombre                  String
+  email                   String        @unique
+  telefono                String?
+  pdfCurso                String? // Ruta del archivo PDF (ej: "s3://bucket/cv_juan.pdf")
+  esElegible              Boolean       @default(true)
+  justificacionNoElegible String?
+  esContratado            Boolean       @default(false)
+  postulaciones           Postulacion[] // Relación con Postulaciones (si aplica)
+  entrevistas             Entrevista[] // Relación con Entrevistas
+}
+
+// Postulaciones de empleados internos a nuevos cargos
+model Postulacion {
+  id               Int          @id @default(autoincrement())
+  empleadoId       Int // Relación con la tabla de Empleados existente
+  cargoActual      String // Campo redundante para evitar joins frecuentes
+  cargoPostulado   String
+  justificacion    String
+  fechaPostulacion DateTime     @default(now())
+  entrevistas      Entrevista[] // Relación con Entrevistas
+  empleado         Empleado     @relation(fields: [empleadoId], references: [id])
+  Elegible         Elegible?    @relation(fields: [elegibleId], references: [id])
+  elegibleId       Int?
+}
+
+// Entrevistas asignadas a candidatos (Elegibles) o postulados (Postulaciones)
+model Entrevista {
+  id                     Int      @id @default(autoincrement())
+  vacanteId              Int // Relación con Vacante
+  candidatoId            Int? // ID de Elegible (si es externo)
+  postuladoId            Int? // ID de Postulacion (si es interno)
+  entrevistadorTecnicoId Int // Relación con Empleado (entrevistador)
+  entrevistadorTHId      Int // Relación con Empleado (entrevistador TH)
+  fechaEntrevista        DateTime
+  resultadoTecnico       String? // "Apto", "No Apto"
+  resultadoTH            String?
+  observaciones          String?
+  procesoCerrado         Boolean  @default(false)
+
+  // Relaciones
+  vacante              Vacante      @relation(fields: [vacanteId], references: [id])
+  candidato            Elegible?    @relation(fields: [candidatoId], references: [id])
+  postulado            Postulacion? @relation(fields: [postuladoId], references: [id])
+  entrevistadorTecnico Empleado     @relation("EntrevistaTecnico", fields: [entrevistadorTecnicoId], references: [id])
+  entrevistadorTH      Empleado     @relation("EntrevistaTH", fields: [entrevistadorTHId], references: [id])
+}
+
+// Vacantes creadas por Talento Humano (TH)
+model Vacante {
+  id            Int          @id @default(autoincrement())
+  titulo        String // Ej: "Desarrollador Backend Senior"
+  departamento  String
+  fechaApertura DateTime     @default(now())
+  fechaCierre   DateTime?
+  descripcion   String?
+  entrevistas   Entrevista[] // Relación con Entrevistas
+}
+
+// Empleados (tabla existente en la intranet, probablemente)
+model Empleado {
+  id                 Int           @id @default(autoincrement())
+  nombre             String
+  cargo              String
+  departamento       String
+  email              String        @unique
+  esEntrevistador    Boolean       @default(false)
+  postulaciones      Postulacion[] // Relación con Postulaciones
+  entrevistasTecnico Entrevista[]  @relation("EntrevistaTecnico")
+  entrevistasTH      Entrevista[]  @relation("EntrevistaTH")
+}
